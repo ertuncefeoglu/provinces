@@ -1,0 +1,70 @@
+<!doctype html>
+<!-- https://next.plnkr.co/edit/ptcw1L4NDUmrG1ND -->
+<html>
+  <head>
+    <link rel="stylesheet" href="lib/style.css">
+    <script src="lib/script.js"></script>
+  </head>
+
+<body>
+    <form action="#" method="post">
+        <table>
+            <tr>
+                <td>Select a province</td>
+                <td>
+<select id="myselect" onchange="change_myselect(this.value)"> <option value="">Select province</option> <option value="1">North</option> <option value="2">Western</option> <option value="3">Southern</option> </select>
+                </td>               
+            </tr>
+        </table>
+    </form>
+
+
+    <p id="demo"></p>
+
+<script>
+function change_myselect(sel) {
+
+
+  switch (sel) {
+  case "1":
+    province = "North";
+    break; 
+  case "2":
+    province = "Western";
+    break;
+  case "3":
+    province = "Southern";
+    break;
+  default: 
+    province = "Not selected";
+    break;
+  }
+ 
+  var obj, dbParam, xmlhttp, myObj, x, txt = "";
+  obj = { table: sel, limit: 20 };
+  dbParam = JSON.stringify(obj);
+  xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      myObj = JSON.parse(this.responseText);
+      txt += "<table border='1'>"
+     for (x in myObj.provinces) {
+  
+      if (myObj.provinces[x].province == province)
+        txt += "<tr><td>" + myObj.provinces[x].name + "</td></tr>";
+      }
+      txt += "</table>" 
+      document.getElementById("demo").innerHTML = txt;
+      }
+    };
+  xmlhttp.open("GET", "provinces.json", true);
+  xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xmlhttp.send("x=" + dbParam);
+}
+</script>
+
+
+
+</body>
+
+</html>
